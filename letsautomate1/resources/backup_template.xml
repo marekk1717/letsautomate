@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<TMMsg_CreateTaskReq>
+
+  <taskInfo>
+    <associations>
+      <appName>Oracle</appName>
+      <backupsetName></backupsetName>
+      <clientName></clientName>
+      <instanceName></instanceName>
+      <subclientName></subclientName>
+    </associations>
+    <subTasks>
+      <options>
+        <backupOpts>
+          <backupLevel></backupLevel>
+          <dataOpt>
+            <enforceTransactionLogUsage>true</enforceTransactionLogUsage>
+            <followMountPoints>true</followMountPoints>
+            <skipConsistencyCheck>false</skipConsistencyCheck>
+            <useCatalogServer>true</useCatalogServer>
+          </dataOpt>
+          <doNotTruncateLog>false</doNotTruncateLog>
+          <incLevel>BEFORE_SYNTH</incLevel>
+          <mediaOpt/>
+          <runIncrementalBackup>true</runIncrementalBackup>
+          <sybaseSkipFullafterLogBkp>false</sybaseSkipFullafterLogBkp>
+          <truncateLogsOnSource>false</truncateLogsOnSource>
+        </backupOpts>
+        <commonOpts>
+          <perfJobOpts/>
+        </commonOpts>
+      </options>
+      <subTask>
+        <operationType>BACKUP</operationType>
+        <subTaskType>BACKUP</subTaskType>
+      </subTask>
+    </subTasks>
+    <task>
+      <initiatedFrom>COMMANDLINE</initiatedFrom>
+      <policyType>DATA_PROTECTION</policyType>
+      <taskFlags>
+        <disabled>false</disabled>
+      </taskFlags>
+      <taskType>IMMEDIATE</taskType>
+    </task>
+  </taskInfo>
+
+</TMMsg_CreateTaskReq>

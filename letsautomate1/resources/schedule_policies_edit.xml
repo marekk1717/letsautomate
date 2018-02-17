@@ -1,0 +1,25 @@
+<TMMsg_ModifyTaskReq>
+  <taskInfo>
+    <task>
+      <task>
+        <taskName></taskName>
+      </task>
+      <taskFlags></taskFlags>
+      <taskType>SCHEDULE_POLICY</taskType>
+    </task>
+    <associations>
+      <clientGroupName></clientGroupName>
+      <clientName></clientName>
+      <appName></appName>
+      <instanceName></instanceName>
+      <backupsetName></backupsetName>
+      <subclientName></subclientName>
+      <flags>
+        <include>1</include> <!-- Add an association -->
+        <deleted>0</deleted> <!-- Delete an association -->
+        <exclude>0</exclude> <!-- Exclude an association -->
+      </flags>
+    </associations>
+    <taskOperation>MODIFY</taskOperation>
+  </taskInfo>
+</TMMsg_ModifyTaskReq>

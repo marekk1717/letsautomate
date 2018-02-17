@@ -1,0 +1,122 @@
+- name: Wait for SSH
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Wait for SSH to come up
+      wait_for: host={{ vmdns }} port=22 delay=10 timeout=60
+
+- name: configure Oracle database and Commvault agent
+  hosts: "{{ vmname }}"
+  become: True
+  gather_facts: True
+
+  vars:
+    dest_rpm: /home/adminuser/oraclelinux.el7.centos.x86_64.rpm 
+    src_rpm: /home/adminuser/automation/cvpackages/oraclelinux.el7.centos.x86_64.rpm
+    src_bash_profile: /home/adminuser/automation/resources/.bash_profile
+    dest_bash_profile: /home/oracle/.bash_profile
+    src_sql1: /home/adminuser/automation/resources/archivelogmode.sql
+    dest_sql1: /home/oracle/archivelogmode.sql
+     
+  
+  tasks:
+
+    - name: install the latest version of libselinux-python
+      yum:
+        name: libselinux-python
+        state: latest
+
+    - name: copy rpm file
+      copy: 
+        src: "{{ src_rpm }}"
+        dest: "{{ dest_rpm }}"
+        owner: adminuser
+        group: adminuser
+        mode: 0644
+
+    - name: copy oracle bash_profile
+      copy:
+        src: "{{ src_bash_profile }}"
+        dest: "{{ dest_bash_profile }}"
+        owner: oracle
+        group: oinstall
+        mode: 0644
+
+    - name: copy oracle script1
+      copy:
+        src: "{{ src_sql1 }}"
+        dest: "{{ dest_sql1 }}"
+        owner: oracle
+        group: oinstall
+        mode: 0644
+
+    - name: create directory for Oracle datafiles
+      file:
+        path: /home/oracle/testdb_datafiles
+        state: directory
+        owner: oracle
+        group: oinstall
+        mode: 0775
+
+
+    - name: create Oracle database
+      shell: dbca -silent -createDatabase -datafileDestination /home/oracle/testdb_datafiles/ -templateName General_Purpose.dbc -gdbname testdb -characterSet AL32UTF8 -sysPassword xxxxxxxxxxxxxxxxxxxxxxxx -systemPassword xxxxxxxxxxxxxxxxxx
+      become: yes
+      become_user: oracle
+      environment:
+        ORACLE_BASE: "/u01/app/oracle"
+        ORACLE_HOME: "/u01/app/oracle/product/12.1.0/dbhome_1"
+        ORACLE_SID: "testdb"
+        PATH: /usr/sbin:/u01/app/oracle/product/12.1.0/dbhome_1/bin:{{ ansible_env.PATH }}
+
+    - set_fact:
+        execute_command: "sqlplus / as sysdba @{{ dest_sql1 }}"
+
+    - name: 
+      shell: "echo exit | {{ execute_command }}"
+      become: yes
+      become_user: oracle
+      environment:
+        ORACLE_BASE: "/u01/app/oracle"
+        ORACLE_HOME: "/u01/app/oracle/product/12.1.0/dbhome_1"
+        ORACLE_SID: "testdb"
+        PATH: /usr/sbin:/u01/app/oracle/product/12.1.0/dbhome_1/bin:{{ ansible_env.PATH }}
+
+    - name: install Commvault client
+      shell: rpm -ivh "{{ dest_rpm }}"
+    
+    - name: delete rpm file
+      file:
+        path: "{{ dest_rpm }}"
+        state: absent
+
+- name: configure Oracle agent
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: qlogin
+      shell: /opt/commvault/Base/qlogin  -u cvadmin -ps xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    - name: create Oracle instance
+      shell: /opt/commvault/Base/qoperation execute -af /home/adminuser/automation/resources/CreateInstance_Template.xml -appName oracle -clientName {{ vmname }} -instanceName testdb -logBackupStoragePolicy/storagePolicyName SP6_maazure2 -oracleHome /u01/app/oracle/product/12.1.0/dbhome_1 -commandLineStoragePolicy/storagePolicyName SP6_maazure2 -oracleUser/userName oracle -sqlConnect/userName / -useCatalogConnect false
+      ignore_errors: yes
+
+    - name: create DB subclient
+      shell: /opt/commvault/Base/qoperation execute -af /home/adminuser/automation/resources/create_subclient_template.xml -appName Oracle -clientName {{ vmname }} -instanceName testdb -subclientName Online -data true -backupMode ONLINE_DB -dataBackupStoragePolicy/storagePolicyName SP6_maazure2
+
+    - name: create LogOnly subclient
+      shell: /opt/commvault/Base/qoperation execute -af /home/adminuser/automation/resources/create_subclient_template.xml -appName Oracle -clientName {{ vmname }} -instanceName testdb -subclientName Logonly -data false -backupArchiveLog true -archiveDelete true -dataBackupStoragePolicy/storagePolicyName SP6_maazure2 -disableSwitchCurrentLog true
+
+    - name: add Online subclient to schedule policy
+      shell: /opt/commvault/Base/qoperation execute -af /home/adminuser/automation/resources/schedule_policies_edit.xml -task/taskName AutomationTest -taskType SCHEDULE_POLICY -associations/clientName {{ vmname }} -associations/appName Oracle -associations/instanceName testdb -associations/subclientName Online -include 1 -taskOperation MODIFY
+
+    - name: add LogOnly subclient to schedule policy
+      shell: /opt/commvault/Base/qoperation execute -af /home/adminuser/automation/resources/schedule_policies_edit.xml -task/taskName AutomationTest_Logonly -taskType SCHEDULE_POLICY -associations/clientName {{ vmname }} -associations/appName Oracle -associations/instanceName testdb -associations/subclientName Logonly -include 1 -taskOperation MODIFY
+
+    - name: start full Online backup
+      shell: /opt/commvault/Base/qoperation execute -af /home/adminuser/automation/resources/backup_template.xml -appName 'Oracle' -clientName {{ vmname }} -instanceName testdb -subclientName Online -backupLevel 'FULL'
+
+    - name: qlogout
+      shell: /opt/commvault/Base/qlogout
