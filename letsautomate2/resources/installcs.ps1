@@ -5,7 +5,7 @@ while (!(Test-Path $logfile -PathType leaf)) { Start-Sleep 5 }
 Start-Job -Name "Job2" -ScriptBlock {Get-Content $logfile -Wait}
 while (($job.State -eq "Running") -and ($job.State -ne "NotStarted"))
 {
-      Start-Sleep -Seconds 1
+    Start-Sleep -Seconds 1
     Receive-Job -Name "Job2"
 }
 Start-Sleep -Seconds 20
