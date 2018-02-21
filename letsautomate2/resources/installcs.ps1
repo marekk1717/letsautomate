@@ -1,7 +1,7 @@
 Write-Host "Commserve Silent Installation..."
 $job = Start-Job -Name "Job1" -ScriptBlock {Start-Process -Wait -NoNewWindow -FilePath "cmd.exe" -WorkingDirectory "C:\Program Files\Commvault\installer" -ArgumentList "/c start /wait setup.exe /play install.xml"}
 $logfile = "F:\Program Files\Commvault\Contentstore\Log Files\Install.log"
-while (!(Test-Path $logfile)) { Start-Sleep 1 }
+while (!(Test-Path $logfile -PathType leaf)) { Start-Sleep 5 }
 Start-Job -Name "Job2" -ScriptBlock {Get-Content $logfile -Wait}
 while (($job.State -eq "Running") -and ($job.State -ne "NotStarted"))
 {
