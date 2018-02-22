@@ -23,7 +23,7 @@ Write-Host "Configuration of Azure VSA client..."
 Start-Process -Wait -WindowStyle Hidden -FilePath "qoperation.exe" -WorkingDirectory "F:\Program Files\Commvault\Contentstore\Base" -ArgumentList "execute -af C:\CVINSTALL\azurerm.xml"
 Write-Host "Configuration of Schedule Policy"
 Start-Process -Wait -WindowStyle Hidden -FilePath "qoperation.exe" -WorkingDirectory "F:\Program Files\Commvault\Contentstore\Base" -ArgumentList "execute -af C:\CVINSTALL\schedule.xml"
-Start-Process -Wait -WindowStyle Hidden -FilePath "qoperation.exe" -WorkingDirectory "F:\Program Files\Commvault\Contentstore\Base" -ArgumentList "execute -af C:\CVINSTALL\create_subclient_template.xml -appName `"Virtual Server`" -clientName AzureRM -instanceName `"Azure Resource Manager`" -backupsetName defaultBackupSet -subclientName `"$region`" -vmContent/children/displayName `"$region`" -vmContent/children/name westeurope -vmContent/children/type DATACENTER -storagePolicyName SP1 -useChangedTrackingOnVM True"
+Start-Process -Wait -WindowStyle Hidden -FilePath "qoperation.exe" -WorkingDirectory "F:\Program Files\Commvault\Contentstore\Base" -ArgumentList "execute -af C:\CVINSTALL\create_subclient_template.xml -appName `"Virtual Server`" -clientName AzureRM -instanceName `"Azure Resource Manager`" -backupsetName defaultBackupSet -subclientName `"varregion`" -vmContent/children/displayName `"varregion`" -vmContent/children/name varregions -vmContent/children/type DATACENTER -storagePolicyName SP1 -useChangedTrackingOnVM True"
 }
 Write-Host "Qlogout"
 Start-Process -Wait -WindowStyle Hidden -FilePath "qlogout.exe" -WorkingDirectory "F:\Program Files\Commvault\Contentstore\Base"
