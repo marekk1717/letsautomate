@@ -1,10 +1,10 @@
 param (
     [string]$saccount = "storageaccount", 
     [string]$saccountkey = "XXXX",
-    [string]$adminuser = "adminuser"
-    [string]$app_id = "XXXX"
-    [string]$app_pwd = "XXXX"
-    [string]$subscription_id = "XXXX"
+    [string]$adminuser = "adminuser",
+    [string]$app_id = "XXXX",
+    [string]$app_pwd = "XXXX",
+    [string]$subscription_id = "XXXX",
     [string]$tenant_id = "XXXX"
 )
 
