@@ -1,0 +1,1 @@
+<EVGui_ConfigureStorageLibraryReq isConfigRequired="1"><library mediaAgentName="vmname" libraryName="AzureCloudLib" mountPath="backupblob" isCloud="1" opType="1" serverType="3" loginName="blob.core.windows.net//storage_account" password="storage_primary_key" baseFolder=""/></EVGui_ConfigureStorageLibraryReq>
