@@ -27,6 +27,7 @@ Start-BitsTransfer -Source "https://raw.githubusercontent.com/marekk1717/letsaut
 Start-BitsTransfer -Source "https://raw.githubusercontent.com/marekk1717/letsautomate/master/letsautomate2/resources/schedule.xml" -Destination "C:\CVINSTALL\schedule.xml"
 Start-BitsTransfer -Source "http://documentation.commvault.com/commvault/v11/others/products/vs_vmware/command_line_xml/create_subclient_template.xml" -Destination "C:\CVINSTALL\create_subclient_template.xml"
 Start-BitsTransfer -Source "http://documentation.commvault.com/commvault/v11/others/products/vs_vmware/command_line_xml/update_vm_filters_template.xml" -Destination "C:\CVINSTALL\update_vm_filters_template.xml"
+Start-BitsTransfer -Source "http://documentation.commvault.com/commvault/v11/others/features/schedule_policy/command_line_xml/schedule_policies_edit.xml" -Destination "C:\CVINSTALL\schedule_policies_edit.xml"
 (Get-Content "C:\CVINSTALL\cloudlib.tmp")  -replace "storage_account",$saccount -replace "storage_primary_key", $saccountkey -replace "vmname",$env:computername | Set-Content "C:\CVINSTALL\cloudlib.xml"
 (Get-Content "C:\CVINSTALL\installcs.tmp")  -replace "varregion",$region -replace "varsregion", $regions | Set-Content "C:\CVINSTALL\installcs.ps1"
 If ($app_id -ne 'XXXX' -And $app_pwd -ne 'XXXX' -And $subscription_id -ne 'XXXX' -And $tenant_id -ne 'XXXX') { (Get-Content "C:\CVINSTALL\azurerm.tmp")  -replace "vmname",$env:computername -replace "subscription_id",$subscription_id -replace "tenant_id",$tenant_id -replace "app_pwd",$app_pwd | Set-Content "C:\CVINSTALL\azurerm.xml" }
