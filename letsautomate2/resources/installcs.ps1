@@ -18,7 +18,11 @@ Write-Host "Configuration of Global Deduplication Policy..."
 Start-Process -Wait -WindowStyle Hidden -FilePath "qoperation.exe" -WorkingDirectory "F:\Program Files\Commvault\Contentstore\Base" -ArgumentList "execute -af C:\CVINSTALL\SP_creation.xml -storagePolicyName SP_GDSP1 -libraryName AzureCloudLib -mediaAgentName $env:computername -maInfoList/mediaAgent/mediaAgentName $env:computername -path G:\DDB1 -enableGlobalDeduplication 1 -hostGlobalDedupStore 1 -enableDASHFull 1 -enableDeduplication 1 -encryptData 1 -encryptionType AES -encryptionKeyLength 256"
 Write-Host "Configuration of Storage Policy..."
 Start-Process -Wait -WindowStyle Hidden -FilePath "qoperation.exe" -WorkingDirectory "F:\Program Files\Commvault\Contentstore\Base" -ArgumentList "execute -af C:\CVINSTALL\SP_creation.xml -storagePolicyName SP1 -useglobalpolicy/storagePolicyName SP_GDSP1 -enableDeduplication 1 -useGlobalDedupStore 1 -enableDASHFull 1 -enableClientSideDedup 1 -retainBackupDataForCycles 4 -retainBackupDataForDays 30"
+If(Test-Path C:\CVINSTALL\azurerm.xml -PathType leaf) {
 Write-Host "Configuration of Azure VSA client..."
 Start-Process -Wait -WindowStyle Hidden -FilePath "qoperation.exe" -WorkingDirectory "F:\Program Files\Commvault\Contentstore\Base" -ArgumentList "execute -af C:\CVINSTALL\azurerm.xml"
+Write-Host "Configuration of Schedule Policy"
+Start-Process -Wait -WindowStyle Hidden -FilePath "qoperation.exe" -WorkingDirectory "F:\Program Files\Commvault\Contentstore\Base" -ArgumentList "execute -af C:\CVINSTALL\schedule.xml"
+}
 Write-Host "Qlogout"
 Start-Process -Wait -WindowStyle Hidden -FilePath "qlogout.exe" -WorkingDirectory "F:\Program Files\Commvault\Contentstore\Base"
