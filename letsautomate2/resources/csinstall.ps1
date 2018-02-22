@@ -14,3 +14,4 @@ Start-BitsTransfer -Source "http://documentation.commvault.com/commvault/v11/oth
 Start-BitsTransfer -Source "https://raw.githubusercontent.com/marekk1717/letsautomate/master/letsautomate2/resources/install.xml" -Destination "C:\Program Files\Commvault\installer\install.xml"
 Start-BitsTransfer -Source "https://raw.githubusercontent.com/marekk1717/letsautomate/master/letsautomate2/resources/cloudlib.tmp" -Destination "C:\CVINSTALL\cloudlib.tmp"
 Start-BitsTransfer -Source "https://raw.githubusercontent.com/marekk1717/letsautomate/master/letsautomate2/resources/installcs.ps1 -Destination "C:\Users\$adminuser\installcs.ps1"
+(Get-Content "C:\CVINSTALL\cloudlib.tmp")  -replace "storage_account",$saccount  -replace "storage_primary_key", $saccountkey -replace "vmname",$env:computername | Set-Content "C:\CVINSTALL\cloudlib.xml"
