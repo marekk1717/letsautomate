@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<App_CreatePseudoClientRequest>
+
+  <clientInfo>
+    <clientType>VIRTUAL_SERVER_CLIENT</clientType>
+    <virtualServerClientProperties>
+      <virtualServerInstanceInfo>
+        <vsInstanceType>AZURE_V2</vsInstanceType>
+        <vmwareVendor>
+          <vcenterHostName>AzureRM</vcenterHostName>
+        </vmwareVendor>
+        <associatedClients>
+          <memberServers>
+            <client>
+              <clientName>vmname</clientName>
+            </client>
+          </memberServers>
+        </associatedClients>
+        <azureResourceManager>
+          <credentials>
+            <userName>app_id</userName>
+            <password>app_pwd</password>
+          </credentials>
+          <serverName>AzureRM</serverName>
+          <subscriptionId>subscription_id</subscriptionId>
+          <tenantId>tenant_id</tenantId>
+        </azureResourceManager>
+      </virtualServerInstanceInfo>
+    </virtualServerClientProperties>
+  </clientInfo>
+
+  <entity>
+    <clientName>AzureRM</clientName>
+  </entity>
+
+</App_CreatePseudoClientRequest>
