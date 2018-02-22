@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CVInstallManager_ClientSetup requestType="1" Operationtype="0" requestFlags="0" Focus="">
+        <CommServeInfo>
+                <CommserveHostInfo hostName="" clientName="" />
+        </CommServeInfo>
+        <installFlags installLatestServicePack="1" showFirewallConfigDialogs="0" skipConfigureMigrationAssistant="0" autoRegister="0" unixGroupAccess="7" skipConfigureLaptopBackupMonitor="0" useNewOS="0" restoreOnlyAgents="0" killBrowserProcesses="0" install32Base="0" disableOSFirewall="0" decoupledInstall="0" RepairMode="0" launchConsole="0" deletePackagesAfterInstall="0" useExistingDump="0" unixOtherAccess="7" stopOracleServices="0" install64Base="0" upgradeMode="0" preferredIPFamily="1" launchRegisterMe="0" skipConfigureProcessManager="0" ignoreJobsRunning="0" forceReboot="0" overrideClientInfo="0" activateAllUserProfiles="0">
+                <sqlInstall sqlDataFilePath="F:\Program Files\Commvault\ContentStore" sqlInstancePath="F:\Program Files\Microsoft SQL Server" sqlInstanceDataPath="F:\Program Files\Microsoft SQL Server">
+                        <sqlSaUserAccount password="||#05!M2NmZTNlZWI4NTRlOGFhNjRlMDE1NWJlYzAxOTY3NGQ1" />
+                </sqlInstall>
+        </installFlags>
+        <User userId="1" />
+        <clientComposition>
+                <components>
+                        <workflowEngine />
+                        <mongoDBInfo pMongoAccess="" sMongoInstance="" nMongoPort="" />
+                        <commcellConsole configureWebAlias="0" />
+                        <webConsole webConsoleURL="http://commserve:0/webconsole/clientDetails/fsDetails.do?clientName=CLIENTNAME" webConsolePort="0" webURL="http://commserve:0/webconsole" webServerClientId="" />
+                        <commserve>
+                                <csdbInfo CommcellPasswordExists="0" CommservSurveyEnabled="1" installMode="1">
+                                        <CommCellUser password="||#05!M2NmZTNlZWI4NTRlOGFhNjRlMDE1NWJlYzAxOTY3NGQ1" userName="admin" />
+                                        <cvSQLAdmin password="3b05b0951146d8e961e5ae8fd691efd56543d060aac884f5b3fd93a74f12ec176466c83e75e2de611eec792ad79755034" />
+                                        <ERPath path="C:\DR">
+                                                <userAccount password="" userName="" />
+                                        </ERPath>
+                                        <FTPLocation path="F:\Program Files\Commvault\ContentStore\SoftwareCache" />
+                                </csdbInfo>
+                                <oemInfo OEMId="1" />
+                        </commserve>
+                        <commonInfo>
+                                <storagePolicyToUse storagePolicyName="CV_DEFAULT" storagePolicyId="1" />
+                        </commonInfo>
+                        <diagnosticsAndUsageServer surveyUploadSite="http://commserve:0/webconsole/" surveyDownloadSite="http://commserve:0/downloads/sqlscripts/" />
+                        <dm2WebService dm2WebSitePort="0" xmlViewWebAlias="xmlview" searchSvcWebAlias="SearchSvc" apachePortNumber="0" dm2DataFileInstallPath="F:\Program Files\Commvault\ContentStore\Data\Data">
+                                <sqlServerInfo pAccess="" sqlServerName="" />
+                        </dm2WebService>
+                        <messageQueue messagequeueMaxJvm="0" messagequeueWSPort="0" messagequeueMQTTPort="0" messagequeueMinJvm="0" messagequeueTCPPort="0" messagequeueWebconsolePort="0" messagequeueDataDir="" messagequeueStompPort="0" messagequeueAMQPPort="0" />
+                        <fileSystem />
+                        <mediaAgent>
+                                <indexCacheDirectory path="F:\Program Files\Commvault\ContentStore\IndexCache" />
+                        </mediaAgent>
+                        <componentInfo ComponentName="File System Core" consumeLicense="0" ComponentId="1" />
+                        <componentInfo ComponentName="CommServe" consumeLicense="1" ComponentId="20" />
+                        <componentInfo ComponentName="Commserve DB" ComponentId="801" />
+                        <componentInfo ComponentName="Commserve History DB" ComponentId="810" />
+                        <componentInfo ComponentName="WorkFlow Engine" consumeLicense="1" ComponentId="23" />
+                        <componentInfo ComponentName="Workflow Engine DB" ComponentId="808" />
+                        <componentInfo ComponentName="MediaAgent" consumeLicense="1" ComponentId="51" />
+                        <componentInfo ComponentName="MediaAgent Core" consumeLicense="0" ComponentId="54" />
+                        <componentInfo ComponentName="Index Store" consumeLicense="1" ComponentId="55" />
+                        <componentInfo ComponentName="Web Server" consumeLicense="1" ComponentId="252" />
+                        <componentInfo ComponentName="DM2 Web services DB" ComponentId="803" />
+                        <componentInfo ComponentName="Search Advanced Document Type Support" consumeLicense="1" ComponentId="259" />
+                        <componentInfo ComponentName="VSS Provider" consumeLicense="1" ComponentId="453" />
+                        <componentInfo ComponentName="VSS Hardware Provider" consumeLicense="1" ComponentId="455" />
+                        <componentInfo ComponentName="CommCell Console" consumeLicense="1" ComponentId="701" />
+                        <componentInfo ComponentName="File System" consumeLicense="1" ComponentId="702" />
+                        <componentInfo ComponentName="Virtual Server" consumeLicense="1" ComponentId="713" />
+                        <componentInfo ComponentName="Web Console" consumeLicense="1" ComponentId="726" />
+                        <componentInfo ComponentName="Metrics Server" consumeLicense="1" ComponentId="727" />
+                        <componentInfo ComponentName="Diagnostics And Usage Server DB" ComponentId="809" />
+                        <componentInfo ComponentName="MongoDB" consumeLicense="0" ComponentId="952" />
+                        <componentInfo ComponentName="Message Queue" consumeLicense="1" ComponentId="954" />
+                </components>
+                <clientInfo>
+                        <clientProps ClientInterface="" BinarySetID="3" byteOrder="Little-endian" />
+                        <client installDirectory="F:\Program Files\Commvault\ContentStore" cvdPort="0" clientPassword="3266ccb4650f56dbce232fd10bd87c842f238b3d97dddc1fc8feb3650d585b3ad38272f39421664c1125ea183ac3bff6e">
+                                <jobResulsDir path="F:\Program Files\Commvault\ContentStore\iDataAgent\JobResults" />
+                                <clientEntity hostName="" clientName="" />
+                                <versionInfo GalaxyBuildNumber="BUILD80">
+                                        <GalaxyRelease ReleaseString="11.0" />
+                                </versionInfo>
+                                <osInfo Type="Windows" SubType="Server" Version="6.2" PlatformType="X64">
+                                        <OsDisplayInfo ProcessorType="WinX64" OSName="Windows Server 2016 Datacenter" OSBuild="9200" />
+                                </osInfo>
+                        </client>
+                </clientInfo>
+        </clientComposition>
+        <Dialogs name="InstallerBA.ViewModels.LicenseAgreementViewModel" show="1" />
+        <Dialogs name="InstallerBA.ViewModels.InstallTypeViewModel" show="0" />
+        <Dialogs name="InstallerBA.ViewModels.CustomPackageProcessorTypeViewModel" show="0" />
+        <Dialogs name="InstallerBA.ViewModels.CustomPackageInstalltypeViewModel" show="0" />
+        <Dialogs name="InstallerBA.ViewModels.PackageOptionViewModel" show="0" />
+        <Dialogs name="InstallerBA.ViewModels.CustomPackageDestinationViewModel" show="0" />
+        <Dialogs name="InstallerBA.ViewModels.FeatureSelectionViewModel" show="0" />
+        <Dialogs name="InstallerBA.ViewModels.CustomPackageOptionsViewModel" show="0" />
+        <Dialogs name="InstallerBA.ViewModels.InstanceSelectionViewModel" show="0" />
+        <Dialogs name="InstallerBA.ViewModels.GalaxyHomePathViewModel" show="0" />
+        <Dialogs name="InstallerBA.ViewModels.IndexCachePathViewModel" show="0" />
+        <Dialogs name="InstallerBA.ViewModels.SQLPasswordViewModel" show="1" />
+        <Dialogs name="InstallerBA.ViewModels.SqlInstallPathViewModel" show="0" />
+        <Dialogs name="InstallerBA.ViewModels.CSDataFilePathViewModel" show="0" />
+        <Dialogs name="InstallerBA.ViewModels.ExpressRecoveryInstallPathViewModel" show="0" />
+        <Dialogs name="InstallerBA.ViewModels.ConfigureProxyServiceViewModel" show="0" />
+        <Dialogs name="ConfigureClientTool.ViewModels.CommunicationInterfaceNameViewModel" show="0" />
+        <Dialogs name="ConfigureClientTool.ViewModels.FirewallDetectedViewModel" show="0" />
+        <Dialogs name="ConfigureClientTool.ViewModels.RunFirewallDaemonViewModel" show="1" />
+        <Dialogs name="ConfigureClientTool.ViewModels.DatabaseInstallOptionViewModel" show="0" />
+        <Dialogs name="InstallerBA.ViewModels.CompletionExitViewModel" show="1" />
+        <Dialogs name="InstallerBA.ViewModels.InstallSummaryViewModel" show="0" />
+        <Dialogs name="InstallerBA.ViewModels.InstallOptionViewModel" show="0" />
+</CVInstallManager_ClientSetup>
