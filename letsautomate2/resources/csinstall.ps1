@@ -1,6 +1,8 @@
 param (
-    [string]$saccount = "storageaccount", 
+    [string]$saccount = "XXXX", 
     [string]$saccountkey = "XXXX",
+    [string]$saccountdr = "XXXX", 
+    [string]$saccountkeydr = "XXXX",
     [string]$adminuser = "adminuser",
     [string]$app_id = "XXXX",
     [string]$app_pwd = "XXXX",
@@ -19,4 +21,5 @@ Start-BitsTransfer -Source "https://raw.githubusercontent.com/marekk1717/letsaut
 Start-BitsTransfer -Source "https://raw.githubusercontent.com/marekk1717/letsautomate/master/letsautomate2/resources/cloudlib.tmp" -Destination "C:\CVINSTALL\cloudlib.tmp"
 Start-BitsTransfer -Source "https://raw.githubusercontent.com/marekk1717/letsautomate/master/letsautomate2/resources/installcs.ps1" -Destination "C:\CVINSTALL\installcs.ps1"
 Start-BitsTransfer -Source "https://raw.githubusercontent.com/marekk1717/letsautomate/master/letsautomate2/resources/azurerm.tmp" -Destination "C:\CVINSTALL\azurerm.tmp"
-(Get-Content "C:\CVINSTALL\cloudlib.tmp")  -replace "storage_account",$saccount  -replace "storage_primary_key", $saccountkey -replace "vmname",$env:computername | Set-Content "C:\CVINSTALL\cloudlib.xml"
+(Get-Content "C:\CVINSTALL\cloudlib.tmp")  -replace "storage_account",$saccount -replace "storage_primary_key", $saccountkey -replace "vmname",$env:computername | Set-Content "C:\CVINSTALL\cloudlib.xml"
+(Get-Content "C:\CVINSTALL\azurerm.tmp")  -replace "vmname",$env:computername -replace "subscription_id",$subscription_id -replace "tenant_id",$tenant_id -replace "app_pwd",$app_pwd | Set-Content "C:\CVINSTALL\azurerm.xml"
