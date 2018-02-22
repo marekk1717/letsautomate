@@ -1,6 +1,7 @@
 param (
     [string]$saccount = "storageaccount", 
-    [string]$saccountkey = "XXXXXXXX"
+    [string]$saccountkey = "XXXXXXXX",
+    [string]$adminuser = "adminuser"
 )
 
 Import-Module BitsTransfer
@@ -12,3 +13,4 @@ Start-Process -Wait -FilePath C:\CVINSTALL\CommvaultSetup.exe -ArgumentList '/s 
 Start-BitsTransfer -Source "http://documentation.commvault.com/commvault/v11/others/features/storage_policies/xml/SP_creation.xml" -Destination "C:\CVINSTALL\SP_creation.xml"
 Start-BitsTransfer -Source "https://raw.githubusercontent.com/marekk1717/letsautomate/master/letsautomate2/resources/install.xml" -Destination "C:\Program Files\Commvault\installer\install.xml"
 Start-BitsTransfer -Source "https://raw.githubusercontent.com/marekk1717/letsautomate/master/letsautomate2/resources/cloudlib.tmp" -Destination "C:\CVINSTALL\cloudlib.tmp"
+Start-BitsTransfer -Source "https://raw.githubusercontent.com/marekk1717/letsautomate/master/letsautomate2/resources/installcs.ps1 -Destination "C:\Users\$adminuser\installcs.ps1"
