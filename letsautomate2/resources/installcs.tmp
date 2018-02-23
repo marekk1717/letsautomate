@@ -1,14 +1,13 @@
 Write-Host "Commserve Silent Installation..."
-$job = Start-Job -Name "Job1" -ScriptBlock {Start-Process -Wait -NoNewWindow -FilePath "cmd.exe" -WorkingDirectory "C:\Program Files\Commvault\installer" -ArgumentList "/c start /wait setup.exe /play install.xml"}
-$logfile = "F:\Program Files\Commvault\Contentstore\Log Files\Install.log"
-while (!(Test-Path $logfile -PathType leaf)) { Start-Sleep 5 }
-Start-Job -Name "Job2" -ScriptBlock {Get-Content $logfile -Wait}
+$job = Start-Job -Name "Job1" -ScriptBlock {Start-Process -Wait -NoNewWindow -FilePath "cmd.exe" -WorkingDirectory "C:\Program Files\Commvault\installer" -ArgumentList "/c start /wait setup.exe /play install.xml"} 
+while (!(Test-Path "F:\Program Files\Commvault\Contentstore\Log Files\Install.log" -PathType leaf)) { Start-Sleep 5 }
+Start-Job -Name "Job2" -ScriptBlock {Get-Content "F:\Program Files\Commvault\Contentstore\Log Files\Install.log" -Wait}
 while (($job.State -eq "Running") -and ($job.State -ne "NotStarted"))
 {
     Start-Sleep -Seconds 1
     Receive-Job -Name "Job2"
 }
-Start-Sleep -Seconds 20
+Start-Sleep -Seconds 60
 Stop-Job -Name "Job2"
 Write-Host "Qlogin"
 Start-Process -Wait -WindowStyle Hidden -FilePath "qlogin.exe" -WorkingDirectory "F:\Program Files\Commvault\Contentstore\Base" -ArgumentList "-u admin -p"
