@@ -28,7 +28,7 @@ Start-BitsTransfer -Source "http://documentation.commvault.com/commvault/v11/oth
 Start-BitsTransfer -Source "http://documentation.commvault.com/commvault/v11/others/features/schedule_policy/command_line_xml/schedule_policies_edit.xml" -Destination "C:\CVINSTALL\schedule_policies_edit.xml"
 (Get-Content "C:\CVINSTALL\cloudlib.tmp")  -replace "storage_account",$saccount -replace "storage_primary_key", $saccountkey -replace "vmname",$env:computername | Set-Content "C:\CVINSTALL\cloudlib.xml"
 (Get-Content "C:\CVINSTALL\installcs.tmp")  -replace "varregion",$region | Set-Content "C:\CVINSTALL\installcs.ps1"
-If ($app_id -ne 'XXXX' -And $app_pwd -ne 'XXXX' -And $subscription_id -ne 'XXXX' -And $tenant_id -ne 'XXXX') { (Get-Content "C:\CVINSTALL\azurerm.tmp")  -replace "vmname",$env:computername -replace "subscription_id",$subscription_id -replace "tenant_id",$tenant_id -replace "app_pwd",$app_pwd | Set-Content "C:\CVINSTALL\azurerm.xml" }
+If ($app_id -ne 'XXXX' -And $app_pwd -ne 'XXXX' -And $subscription_id -ne 'XXXX' -And $tenant_id -ne 'XXXX') { (Get-Content "C:\CVINSTALL\azurerm.tmp")  -replace "vmname",$env:computername -replace "subscription_id",$subscription_id -replace "tenant_id",$tenant_id -replace "app_pwd",$app_pwd -replace "app_id",$app_id | Set-Content "C:\CVINSTALL\azurerm.xml" }
 Remove-Item -Path C:\CVINSTALL\installcs.tmp -Force
 Remove-Item -Path C:\CVINSTALL\cloudlib.tmp -Force
 Remove-Item -Path C:\CVINSTALL\azurerm.tmp -Force
