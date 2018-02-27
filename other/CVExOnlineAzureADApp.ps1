@@ -59,4 +59,6 @@ if(!($myApp = Get-AzureADApplication -Filter "DisplayName eq '$($appName)'"  -Er
     Write-Host "Please Grant Permissions for $($myApp.DisplayName) on Azure Portal. Go to Settings -> Required Permissions and click on the Grant Permissions option."
     Write-Host "URL: " "https://portal.azure.com/#blade/Microsoft_AAD_IAM/ApplicationBlade/appId/$($myApp.AppId)/objectId/$($myApp.ObjectId)"
 
+} Else {
+Write-Host "App $($myApp.DisplayName) already exists."
 }
