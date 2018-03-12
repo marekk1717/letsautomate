@@ -115,8 +115,6 @@ def create_tenant(webconsole_hostname, company, contact_name, email, companyalia
                 commserve.network.set_outgoing_routes([{'routeType': 'VIA_PROXY', 'remoteEntity': company,
                                                      'remoteProxy': proxycfg[0], 'isClient': False}])
                 commserve.push_network_config()
-                ngroup.push_network_config()
-
             except BaseException as e:
                 print(str(e))
                 sys.exit(1)
