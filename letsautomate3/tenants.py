@@ -72,18 +72,19 @@ def create_tenant(webconsole_hostname, company, contact_name, email, companyalia
     ncommcell = login(webconsole_hostname)
 
     try:
-        newtenant = ncommcell.organizations.add(company, email, contact_name, companyalias)
+        newtenant = ncommcell.organizations.add(name=company, email=email, contact_name=contact_name, company_alias=companyalias)
     except BaseException as e:
         print(str(e))
         sys.exit(1)
     print('Tenant ' + company + ' has been added successfully.')
 
-    try:
-        newtenant.plans = nplans
-    except BaseException as e:
-        print(str(e))
-        sys.exit(1)
-    print('Plans ' + plans + ' have been successfully assigned to ' + company + '.')
+    if plans.lower() != "none":
+        try:
+            newtenant.plans = nplans
+        except BaseException as e:
+            print(str(e))
+            sys.exit(1)
+        print('Plans ' + plans + ' have been successfully assigned to ' + company + '.')
 
     if proxy.lower() == 'none':
         print('No change has been made in existing firewall configuration.')
@@ -96,6 +97,7 @@ def create_tenant(webconsole_hostname, company, contact_name, email, companyalia
             try:
                 ngroup.network.set_outgoing_routes([{'routeType': 'VIA_PROXY', 'remoteEntity': ncommcell.commserv_name,
                                                      'remoteProxy': proxycfg[0], 'isClient': True}])
+                ngroup.network.set_incoming_connections([{'state': 'BLOCKED','entity': proxycfg[0],'isClient': True}])
                 commserve.network.set_outgoing_routes([{'routeType': 'VIA_PROXY', 'remoteEntity': company,
                                                      'remoteProxy': proxycfg[0], 'isClient': False}])
                 commserve.push_network_config()
@@ -108,12 +110,38 @@ def create_tenant(webconsole_hostname, company, contact_name, email, companyalia
         if len(proxycfg) == 3:
             try:
                 ngroup.network.set_outgoing_routes([{'routeType': 'VIA_GATEWAY', 'remoteEntity': proxycfg[0],
-                                                     'streams': 2, 'gatewayPort': int(proxycfg[2]), 'gatewayHost': proxycfg[1],
-                                                     'isClient': True}])
+                                                     'streams': 1, 'gatewayPort': int(proxycfg[2]), 'gatewayHost': proxycfg[1],
+                                                     'isClient': True, 'forceAllDataTraffic': True, 'connectionProtocol': 1}])
                 ngroup.network.set_outgoing_routes([{'routeType': 'VIA_PROXY', 'remoteEntity': ncommcell.commserv_name,
                                                      'remoteProxy': proxycfg[0], 'isClient': True}])
+                ngroup.network.set_incoming_connections([{'state': 'BLOCKED', 'entity': proxycfg[0], 'isClient': True}])
                 commserve.network.set_outgoing_routes([{'routeType': 'VIA_PROXY', 'remoteEntity': company,
                                                      'remoteProxy': proxycfg[0], 'isClient': False}])
+                commserve.push_network_config()
+            except BaseException as e:
+                print(str(e))
+                sys.exit(1)
+        if len(proxycfg) == 6:
+            try:
+                ngroup.network.set_outgoing_routes([{'routeType': 'VIA_GATEWAY', 'remoteEntity': proxycfg[0],
+                                                     'streams': 1, 'gatewayPort': int(proxycfg[2]), 'gatewayHost': proxycfg[1],
+                                                     'isClient': True, 'forceAllDataTraffic': True, 'connectionProtocol': 1}])
+                ngroup.network.set_outgoing_routes([{'routeType': 'VIA_PROXY', 'remoteEntity': ncommcell.commserv_name,
+                                                     'remoteProxy': proxycfg[0], 'isClient': True}])
+                ngroup.network.set_incoming_connections([{'state': 'BLOCKED', 'entity': proxycfg[0], 'isClient': True}])
+                commserve.network.set_outgoing_routes([{'routeType': 'VIA_PROXY', 'remoteEntity': company,
+                                                     'remoteProxy': proxycfg[0], 'isClient': False}])
+
+                ngroup.network.set_outgoing_routes([{'routeType': 'VIA_GATEWAY', 'remoteEntity': proxycfg[3],
+                                                     'streams': 1, 'gatewayPort': int(proxycfg[5]),
+                                                     'gatewayHost': proxycfg[4],
+                                                     'isClient': True, 'forceAllDataTraffic': True,
+                                                     'connectionProtocol': 1}])
+                ngroup.network.set_outgoing_routes([{'routeType': 'VIA_PROXY', 'remoteEntity': ncommcell.commserv_name,
+                                                     'remoteProxy': proxycfg[3], 'isClient': True}])
+                ngroup.network.set_incoming_connections([{'state': 'BLOCKED', 'entity': proxycfg[3], 'isClient': True}])
+                commserve.network.set_outgoing_routes([{'routeType': 'VIA_PROXY', 'remoteEntity': company,
+                                                        'remoteProxy': proxycfg[3], 'isClient': False}])
                 commserve.push_network_config()
             except BaseException as e:
                 print(str(e))
@@ -142,7 +170,9 @@ def list_tenants(webconsole_hostname):
     ncommcell = login(webconsole_hostname)
 
     try:
-        print(ncommcell.organizations)
+        print("List of Tenants:")
+        for company in ncommcell.organizations.all_organizations:
+            print(company)
     except BaseException as e:
         print(str(e))
         sys.exit(1)
