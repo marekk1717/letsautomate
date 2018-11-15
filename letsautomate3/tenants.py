@@ -27,27 +27,31 @@ def decode(key, enc):
     return "".join(dec)
 
 def create_authfile():
+    webconsole_hostname = input("Webconsole URL: ")
     commcell_username = input("Username: ")
     commcell_password = encode(enckey, getpass.getpass("Password for " + commcell_username + ": "))
 
     json_str = {}
     json_str['username'] = commcell_username
     json_str['password'] = commcell_password
+    json_str['consoleurl'] = webconsole_hostname
 
     with open('cvauth.json', 'w') as outfile:
         json.dump(json_str, outfile)
 
-def login(webconsole_hostname):
+def login():
 
     auth_read = False
     if os.path.isfile(cvauthfile):
         authdata = json.load(open(cvauthfile))
-        if 'username' in authdata and 'password' in authdata:
+        if 'username' in authdata and 'password' in authdata and 'consoleurl' in authdata:
             commcell_username = authdata['username']
             commcell_password = decode(enckey, authdata['password'])
+            webconsole_hostname = authdata['consoleurl']
             auth_read = True
 
     if not auth_read:
+        webconsole_hostname = input("Username: ")
         commcell_username = input("Username: ")
         commcell_password = getpass.getpass("Password for " + commcell_username + ": ")
 
@@ -56,10 +60,10 @@ def login(webconsole_hostname):
     except BaseException as e:
         print(str(e))
         sys.exit(1)
-    print('User ' + commcell_username + ' logged in successfully on ' + commcell.commserv_name + '.')
+#    print('User ' + commcell_username + ' logged in successfully on ' + commcell.commserv_name + '.')
     return commcell
 
-def create_tenant(webconsole_hostname, company, contact_name, email, companyalias, plans, proxy):
+def create_tenant(company, contact_name, email, companyalias, plans, proxy):
 
     if plans.lower() == 'none':
         nplans = None
@@ -69,7 +73,7 @@ def create_tenant(webconsole_hostname, company, contact_name, email, companyalia
         else:
             nplans = plans.split(',')
 
-    ncommcell = login(webconsole_hostname)
+    ncommcell = login()
 
     try:
         newtenant = ncommcell.organizations.add(name=company, email=email, contact_name=contact_name, company_alias=companyalias)
@@ -148,8 +152,9 @@ def create_tenant(webconsole_hostname, company, contact_name, email, companyalia
                 sys.exit(1)
         print('Firewall options have been configured successfully.')
 
-def delete_tenants(webconsole_hostname, companies):
-    ncommcell = login(webconsole_hostname)
+
+def delete_tenants(companies):
+    ncommcell = login()
 
     if isinstance(companies, tuple):
         ncompanies = companies
@@ -166,11 +171,95 @@ def delete_tenants(webconsole_hostname, companies):
             sys.exit(1)
         print('Tenant ' + ncompanies[x] + ' has been deleted successfully.')
 
-def list_tenants(webconsole_hostname):
-    ncommcell = login(webconsole_hostname)
+
+def disable_activity(companies):
+    ncommcell = login()
+
+    if isinstance(companies, tuple):
+        ncompanies = companies
+    else:
+        ncompanies = companies.split(',')
+
+    for x in range(0, len(ncompanies)):
+        try:
+            ngroup = ncommcell.client_groups.get(ncompanies[x])
+            ngroup.disable_backup()
+            ngroup.disable_restore()
+        except BaseException as e:
+            print(str(e))
+            sys.exit(1)
+        print('Backup/Restore activities have been disabled successfully on Tenant: ' + ncompanies[x] + '.')
+
+def enable_activity(companies):
+    ncommcell = login()
+
+    if isinstance(companies, tuple):
+        ncompanies = companies
+    else:
+        ncompanies = companies.split(',')
+
+    for x in range(0, len(ncompanies)):
+        try:
+            ngroup = ncommcell.client_groups.get(ncompanies[x])
+            ngroup.enable_backup()
+            ngroup.enable_restore()
+        except BaseException as e:
+            print(str(e))
+            sys.exit(1)
+        print('Backup/Restore activities have been disabled successfully on Tenant: ' + ncompanies[x] + '.')
+
+def release_license(companies):
+    ncommcell = login()
+
+    if isinstance(companies, tuple):
+        ncompanies = companies
+    else:
+        ncompanies = companies.split(',')
+
+    for x in range(0, len(ncompanies)):
+        try:
+            ngroup = ncommcell.client_groups.get(ncompanies[x])
+            for ncl in ngroup.associated_clients:
+                try:
+                    nclient = ncommcell.clients.get(ncl)
+                    nclient.release_license()
+                except BaseException as e:
+                    print(str(e))
+                else:
+                    print('Licenses have been released on ' + nclient.client_name + '.')
+
+
+        except BaseException as e:
+            print(str(e))
+            sys.exit(1)
+
+def delete_clients(companies):
+    ncommcell = login()
+
+    if isinstance(companies, tuple):
+        ncompanies = companies
+    else:
+        ncompanies = companies.split(',')
+
+    for x in range(0, len(ncompanies)):
+        try:
+            ngroup = ncommcell.client_groups.get(ncompanies[x])
+            for ncl in ngroup.associated_clients:
+                try:
+                    ncommcell.clients.delete(ncl)
+                except BaseException as e:
+                    print(str(e))
+                else:
+                    print(ncl + ' have been deleted successfully.')
+
+        except BaseException as e:
+            print(str(e))
+            sys.exit(1)
+
+def list_tenants():
+    ncommcell = login()
 
     try:
-        print("List of Tenants:")
         for company in ncommcell.organizations.all_organizations:
             print(company)
     except BaseException as e:
