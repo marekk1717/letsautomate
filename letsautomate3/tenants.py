@@ -208,6 +208,22 @@ def enable_activity(companies):
             sys.exit(1)
         print('Backup/Restore activities have been disabled successfully on Tenant: ' + ncompanies[x] + '.')
 
+def install_updates(companies):
+    ncommcell = login()
+
+    if isinstance(companies, tuple):
+        ncompanies = companies
+    else:
+        ncompanies = companies.split(',')
+
+    for x in range(0, len(ncompanies)):
+        try:
+            ncommcell.push_servicepack_and_hotfix(client_computer_groups=[ncompanies[x]])
+        except BaseException as e:
+            print(str(e))
+            sys.exit(1)
+        print('Installation of  service pack and hotfixes successfully initiated on Tenant: ' + ncompanies[x] + '.')
+
 def release_license(companies):
     ncommcell = login()
 
